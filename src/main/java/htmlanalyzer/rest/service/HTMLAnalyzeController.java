@@ -51,41 +51,44 @@ class HTMLAnalyzeController {
     private void populateHeader(MetaData metaData, Map<String, Long> header){
         Long value;
         metaData.setH1Count(((value = header.get("h1")) != null) ? value.intValue() : 0);
-        metaData.setH1Count(((value = header.get("h2")) != null) ? value.intValue() : 0);
-        metaData.setH1Count(((value = header.get("h3")) != null) ? value.intValue() : 0);
-        metaData.setH1Count(((value = header.get("h4")) != null) ? value.intValue() : 0);
-        metaData.setH1Count(((value = header.get("h5")) != null) ? value.intValue() : 0);
-        metaData.setH1Count(((value = header.get("h6")) != null) ? value.intValue() : 0);
+        metaData.setH2Count(((value = header.get("h2")) != null) ? value.intValue() : 0);
+        metaData.setH3Count(((value = header.get("h3")) != null) ? value.intValue() : 0);
+        metaData.setH4Count(((value = header.get("h4")) != null) ? value.intValue() : 0);
+        metaData.setH5Count(((value = header.get("h5")) != null) ? value.intValue() : 0);
+        metaData.setH6Count(((value = header.get("h6")) != null) ? value.intValue() : 0);
     }
 
     /**
      * Rest endpoint to retrieve links.
      * Retrieves only maximum top 5 links and records the reachable status for each links from the given offset value.
      * @param url url
-     * @param offset offset
+     * @param pageSize pageSize
+     * @param pageNumber pageNumber
      * @return Links
      */
     @RequestMapping("/rest/links")
     public Links<Link> links(@RequestParam(value="url", defaultValue="http://") String url,
-                             @RequestParam(value="offset", defaultValue="0") int offset) {
+                             @RequestParam(value="pageSize", defaultValue="5") int pageSize,
+                             @RequestParam(value="pageNumber", defaultValue="1") int pageNumber) {
         log.info("Retrieving metadata for url: " + url);
         HtmlParser parser = new LinkParser();
         RequestWrapper request = new RequestWrapper();
         request.setUrl(url);
-        request.setLimit(6); //set limit one greater than expected. This is to determine if there are more available
-        // links or not
-        request.setOffset(offset);
+        if(pageSize <= 0){
+            pageSize = 5;
+        } if(pageNumber <= 0){
+            pageNumber = 1;
+        }
+        request.setLimit(pageSize);
+        request.setOffset((pageNumber - 1) * pageSize);
         ResultsWrapper results = parser.parse(request);
         List<Link> links = new ArrayList<>();
-        //Check if each links is reachable or not. Pick only the top 5.
-        for(int i = 0, l = results.getLinks().size(); (i < 5 && i < l); i ++){
+        //Check if each links is reachable or not..
+        for(int i = 0, l = results.getLinks().size(); i < l; i ++){
             links.add(isLinkReachable(results.getLinks().get(i), 1000));
         }
         Links<Link> linkResponse = new Links<>();
-        if(results.getLinks().size() > 5){
-            linkResponse.setHasMore(true);
-            linkResponse.setLinks(links);
-        }
+        linkResponse.setLinks(links);
         return linkResponse;
     }
 

@@ -7,7 +7,6 @@ import java.util.List;
  */
 public class Links<T> {
     private List<T> links;
-    private boolean hasMore;
 
     public List<T> getLinks() {
         return links;
@@ -15,13 +14,5 @@ public class Links<T> {
 
     public void setLinks(List<T> links) {
         this.links = links;
-    }
-
-    public boolean isHasMore() {
-        return hasMore;
-    }
-
-    public void setHasMore(boolean hasMore) {
-        this.hasMore = hasMore;
     }
 }

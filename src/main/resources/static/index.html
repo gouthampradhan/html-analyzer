@@ -4,10 +4,11 @@
     <title>Html Analyzer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="/main.css" rel="stylesheet">
+    <link href="/pagination.css" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/app.js"></script>
+    <script src="/pagination.js"></script>
 </head>
 
 <body id="connect">
@@ -33,23 +34,25 @@
     <div class="row">
         <div class="col-md-12">
             <table id="tab-metadata" class="table table-striped">
-                <p><b>METADATA</b></p>
                 <tbody id="metadata">
                 </tbody>
             </table>
 
             <table id="tab-heading" class="table table-striped">
-                <p><b>NUMBER OF HEADING (GROUPED BY TYPE)</b></p>
                 <tbody id="heading">
                 </tbody>
             </table>
 
-            <table id="tab-links" class="table table-striped">
-                <p><b>NUMBER OF LINKS</b></p>
+            <table id="tab-link-count" class="table table-striped">
                 <tbody id="links">
                 </tbody>
             </table>
 
+            <table id="tab-links" class="table table-striped">
+                <tbody id="data-container">
+                </tbody>
+            </table>
+            <div id="pagination-container"></div>
         </div>
     </div>
 </div>

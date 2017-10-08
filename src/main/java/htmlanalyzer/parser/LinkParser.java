@@ -30,9 +30,13 @@ public class LinkParser implements HtmlParser {
             List<String> links = (List<String>)extractor.extract(doc);
             links.sort(Comparator.comparing(String::toString));
             int offset = request.getOffset();
-            int limit = request.getLimit();
-            if(offset < links.size()){ //offset should always be smaller than the size of list
-                links = links.subList(offset, offset + limit);
+            int size = request.getLimit();
+            if(offset < links.size()){ //offset and limit should always be smaller than the size of list
+                int limit = offset + size;
+                if(limit > links.size()){
+                    limit = links.size();
+                }
+                links = links.subList(offset, limit);
             }else{
                 links = new ArrayList<>(); //return a empty list
             }
