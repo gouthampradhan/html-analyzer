@@ -84,6 +84,4 @@ public class HTMLAnalyzeControllerTest {
                 .andExpect(jsonPath("$.internalLinks").isNotEmpty())
                 .andExpect(jsonPath("$.externalLinks").isNotEmpty());
     }
-
-
 }

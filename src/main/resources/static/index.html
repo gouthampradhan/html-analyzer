@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Html Analyzer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="/main.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/app.js"></script>
+</head>
+
+<body id="connect">
+<div class="container">
+    <h1>Html Analyzer</h1>
+    <p>Enter the url in the below text box and click 'Analyze'</p>
+</div>
+
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+    enabled. Please enable
+    Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-inline">
+                <div class="form-group">
+                    Enter URL: <input type="text" name="fname" id="url">
+                    <button id="submit" class="btn btn-default" type="submit" >Analyze</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tab-metadata" class="table table-striped">
+                <p><b>METADATA</b></p>
+                <tbody id="metadata">
+                </tbody>
+            </table>
+
+            <table id="tab-heading" class="table table-striped">
+                <p><b>NUMBER OF HEADING (GROUPED BY TYPE)</b></p>
+                <tbody id="heading">
+                </tbody>
+            </table>
+
+            <table id="tab-links" class="table table-striped">
+                <p><b>NUMBER OF LINKS</b></p>
+                <tbody id="links">
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
