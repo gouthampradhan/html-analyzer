@@ -5,5 +5,5 @@ package htmlanalyzer.parser;
  */
 public interface HtmlParser {
     int TIME_OUT = 3000;
-    ResultsWrapper parse(String url);
+    ResultsWrapper parse(RequestWrapper request);
 }

@@ -1,9 +1,9 @@
 package htmlanalyzer.rest.service;
 
-import htmlanalyzer.parser.HtmlParser;
-import htmlanalyzer.parser.MetaDataParser;
-import htmlanalyzer.parser.ResultsWrapper;
+import htmlanalyzer.parser.*;
 import htmlanalyzer.parser.data.LinkType;
+import htmlanalyzer.rest.model.Link;
+import htmlanalyzer.rest.model.Links;
 import htmlanalyzer.rest.model.MetaData;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,21 +28,18 @@ class HTMLAnalyzeController {
         log.info("Retrieving metadata for url: " + url);
         HtmlParser parser = new MetaDataParser();
         MetaData metadata = new MetaData();
-        ResultsWrapper resultsWrapper = parser.parse(url);
-        if(resultsWrapper.getMetadata() != null){
-            metadata.setHtmlVersion(resultsWrapper.getMetadata().getHtmlVersion());
-            metadata.setTitle(resultsWrapper.getMetadata().getTitle());
-            Map<String, Long> header = resultsWrapper.getMetadata().getHeader();
+        RequestWrapper request = new RequestWrapper();
+        request.setUrl(url);
+        ResultsWrapper results = parser.parse(request);
+        if(results.getMetadata() != null){
+            metadata.setHtmlVersion(results.getMetadata().getHtmlVersion());
+            metadata.setTitle(results.getMetadata().getTitle());
+            Map<String, Long> header = results.getMetadata().getHeader();
             if(header != null){
-                metadata.setH1Count(header.get("h1") != null ? header.get("h1").intValue() : 0);
-                metadata.setH2Count(header.get("h2") != null ? header.get("h2").intValue() : 0);
-                metadata.setH3Count(header.get("h3") != null ? header.get("h3").intValue() : 0);
-                metadata.setH4Count(header.get("h4") != null ? header.get("h4").intValue() : 0);
-                metadata.setH5Count(header.get("h5") != null ? header.get("h5").intValue() : 0);
-                metadata.setH6Count(header.get("h6") != null ? header.get("h6").intValue() : 0);
+                populateHeader(metadata, header);
             }
-            metadata.setHasLogin(resultsWrapper.getMetadata().isLogin());
-            Map<LinkType, Integer> links = resultsWrapper.getMetadata().getLinkCount();
+            metadata.setHasLogin(results.getMetadata().isLogin());
+            Map<LinkType, Integer> links = results.getMetadata().getLinkCount();
             if(links != null){
                 metadata.setInternalLinks(links.get(LinkType.INTERNAL) != null ? links.get(LinkType.INTERNAL) : 0);
                 metadata.setExternalLinks(links.get(LinkType.EXTERNAL) != null ? links.get(LinkType.EXTERNAL) : 0);
@@ -45,4 +47,70 @@ class HTMLAnalyzeController {
         }
         return metadata;
     }
+
+    private void populateHeader(MetaData metaData, Map<String, Long> header){
+        Long value;
+        metaData.setH1Count(((value = header.get("h1")) != null) ? value.intValue() : 0);
+        metaData.setH1Count(((value = header.get("h2")) != null) ? value.intValue() : 0);
+        metaData.setH1Count(((value = header.get("h3")) != null) ? value.intValue() : 0);
+        metaData.setH1Count(((value = header.get("h4")) != null) ? value.intValue() : 0);
+        metaData.setH1Count(((value = header.get("h5")) != null) ? value.intValue() : 0);
+        metaData.setH1Count(((value = header.get("h6")) != null) ? value.intValue() : 0);
+    }
+
+    /**
+     * Rest endpoint to retrieve links.
+     * Retrieves only maximum top 5 links and records the reachable status for each links from the given offset value.
+     * @param url url
+     * @param offset offset
+     * @return Links
+     */
+    @RequestMapping("/rest/links")
+    public Links<Link> links(@RequestParam(value="url", defaultValue="http://") String url,
+                             @RequestParam(value="offset", defaultValue="0") int offset) {
+        log.info("Retrieving metadata for url: " + url);
+        HtmlParser parser = new LinkParser();
+        RequestWrapper request = new RequestWrapper();
+        request.setUrl(url);
+        request.setLimit(6); //set limit one greater than expected. This is to determine if there are more available
+        // links or not
+        request.setOffset(offset);
+        ResultsWrapper results = parser.parse(request);
+        List<Link> links = new ArrayList<>();
+        //Check if each links is reachable or not. Pick only the top 5.
+        for(int i = 0, l = results.getLinks().size(); (i < 5 && i < l); i ++){
+            links.add(isLinkReachable(results.getLinks().get(i), 1000));
+        }
+        Links<Link> linkResponse = new Links<>();
+        if(results.getLinks().size() > 5){
+            linkResponse.setHasMore(true);
+            linkResponse.setLinks(links);
+        }
+        return linkResponse;
+    }
+
+    /**
+     * Static method to check if the link is reachable or not
+     * @param url url
+     * @param timeout timeout
+     */
+    public static Link isLinkReachable(String url, int timeout) {
+        Link link = new Link();
+        link.setUrl(url);
+        url = url.replaceFirst("^https", "http"); // Otherwise an exception may be thrown on invalid SSL certificates.
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.setReadTimeout(timeout);
+            connection.setRequestMethod("HEAD");
+            int responseCode = connection.getResponseCode();
+            link.setReachable((200 <= responseCode && responseCode <= 399));
+            link.setStatus(String.valueOf(responseCode));
+        } catch (IOException exception) {
+            link.setReachable(false);
+            link.setStatus(exception.getLocalizedMessage());
+        }
+        return link;
+    }
+
 }

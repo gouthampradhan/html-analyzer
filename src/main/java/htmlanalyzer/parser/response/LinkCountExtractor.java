@@ -5,11 +5,10 @@ import htmlanalyzer.parser.data.LinkType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,25 +20,10 @@ public class LinkCountExtractor implements HtmlDataExtractor {
     @Override
     public Map<LinkType, Integer> extract(Document document) {
         Map<LinkType, Integer> map = new HashMap<>();
-        Elements links = document.select("a[href]");
-        Elements media = document.select("[src]");
-        Elements imports = document.select("link[href]");
-
-        for (Element src : media) {
-            String srcUrl = src.attr("abs:src");
-            matchAndUpdate(map, srcUrl, document);
+        List<String> links = LinkExtractorHelper.extract(document);
+        for(String link : links){
+            matchAndUpdate(map, link, document);
         }
-
-        for (Element link : imports) {
-            String importUrl = link.attr("abs:href");
-            matchAndUpdate(map, importUrl, document);
-        }
-
-        for (Element link : links) {
-            String linkUrl = link.attr("abs:href");
-            matchAndUpdate(map, linkUrl, document);
-        }
-
         return map;
     }
 

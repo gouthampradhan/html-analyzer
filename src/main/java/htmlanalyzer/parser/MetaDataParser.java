@@ -21,10 +21,10 @@ public class MetaDataParser implements HtmlParser {
 
     @Override
     @SuppressWarnings("unchecked")
-    public ResultsWrapper parse(String url) {
+    public ResultsWrapper parse(RequestWrapper request) {
         ResultsWrapper resultsWrapper = new ResultsWrapper();
         try {
-            Document doc = Jsoup.parse(new URL(url), TIME_OUT);
+            Document doc = Jsoup.parse(new URL(request.getUrl()), TIME_OUT);
             Metadata metadata = new Metadata();
             HtmlDataExtractor extractor;
 
@@ -50,7 +50,7 @@ public class MetaDataParser implements HtmlParser {
 
             resultsWrapper.setMetadata(metadata);
         } catch (IOException e) {
-            log.error("Failed to get metadata for the url: " + url, e);
+            log.error("Failed to get metadata for the url: " + request.getUrl(), e);
         }
         //TODO handle RunTimeException
         return resultsWrapper;

@@ -1,17 +1,16 @@
 package htmlanalyzer.parser;
 
-import htmlanalyzer.parser.data.Link;
 import htmlanalyzer.parser.data.Metadata;
 
 import java.util.List;
+
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
  */
 public class ResultsWrapper {
     private Metadata metadata;
-    private List<Link> links;
-
+    private List<String> links;
     public Metadata getMetadata() {
         return metadata;
     }
@@ -20,11 +19,11 @@ public class ResultsWrapper {
         this.metadata = metadata;
     }
 
-    public List<Link> getLinks() {
+    public List<String> getLinks() {
         return links;
     }
 
-    public void setLinks(List<Link> links) {
+    public void setLinks(List<String> links) {
         this.links = links;
     }
 }
