@@ -13,10 +13,17 @@ import java.util.Map;
 
 /**
  * Created by gouthamvidyapradhan on 08/10/2017.
+ * Class to extract link count categorized as internal and external
  */
 public class LinkCountExtractor implements HtmlDataExtractor {
     private Log log = LogFactory.getLog(LinkCountExtractor.class);
 
+    /**
+     * Extract the links and count the internal and external links. Internal links has the same domain as the given
+     * url but external links has different domain
+     * @param document Jsoup document object
+     * @return Map of LinkType and total count of each type
+     */
     @Override
     public Map<LinkType, Integer> extract(Document document) {
         Map<LinkType, Integer> map = new HashMap<>();

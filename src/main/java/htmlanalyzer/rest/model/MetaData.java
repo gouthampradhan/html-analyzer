@@ -2,17 +2,27 @@ package htmlanalyzer.rest.model;
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
+ * Java POJO to be marshaled as JSON response
  */
 public class MetaData {
+    //Title of HTML document
     private String title;
+
+    //HTML Version of html document
     private String htmlVersion;
+
+    //Flag indicating if the page has a login form
     private boolean hasLogin;
+
+    //Header type count H1 to H6
     private int h1Count;
     private int h2Count;
     private int h3Count;
     private int h4Count;
     private int h5Count;
     private int h6Count;
+
+    //Internal and external html link count
     private int internalLinks;
     private int externalLinks;
 

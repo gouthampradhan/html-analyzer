@@ -6,8 +6,16 @@ import org.jsoup.select.Elements;
 
 /**
  * Created by gouthamvidyapradhan on 08/10/2017.
+ * Class to extract the login information in the given url.
  */
 public class LoginInfoExtractor implements HtmlDataExtractor {
+
+    /**
+     * Method looks for the text-input type and name attributes in a give html form to identify if the
+     * given html form has a login information or not
+     * @param document Jsoup document object
+     * @return true if the document has a login information, false otherwise.
+     */
     @Override
     public Boolean extract(Document document) {
         Elements inputs = document.getElementsByTag("input");

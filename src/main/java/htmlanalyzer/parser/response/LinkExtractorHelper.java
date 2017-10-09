@@ -9,9 +9,15 @@ import java.util.List;
 
 /**
  * Created by gouthamvidyapradhan on 08/10/2017.
+ * A helper class to retrieve the links in a given document.
  */
 public class LinkExtractorHelper {
 
+    /**
+     * Static method to extract the links from a given Jsoup document.
+     * @param document Jsoup document object
+     * @return List of links
+     */
     public static List<String> extract(Document document) {
         Elements links = document.select("a[href]");
         Elements media = document.select("[src]");

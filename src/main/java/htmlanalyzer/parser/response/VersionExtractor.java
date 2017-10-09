@@ -8,8 +8,15 @@ import java.util.stream.Collectors;
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
+ * Class to extract the html version information.
  */
 public class VersionExtractor implements HtmlDataExtractor {
+    /**
+     * Method to extract the version information from a document. Checks for the DocumentType to find out the version
+     * of a given html document
+     * @param document Jsoup document object
+     * @return HTML version
+     */
     @Override
     public String extract(Document document) {
         List<String> list = document.childNodes().stream()

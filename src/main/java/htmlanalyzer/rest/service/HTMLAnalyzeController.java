@@ -18,11 +18,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Rest controller class with rest end points.
+ */
 @RestController
 class HTMLAnalyzeController {
 
     private static Log log = LogFactory.getLog(HTMLAnalyzeController.class);
 
+    /**
+     * Method to expose the rest end point to retrieve metadata information.
+     * @param url String URL. The URL must begin with http:// or https://
+     * @return JSON response containing metadata information.
+     */
     @RequestMapping("/rest/metadata")
     public MetaData metadata(@RequestParam(value="url", defaultValue="http://") String url) {
         log.info("Retrieving metadata for url: " + url);
@@ -60,11 +68,11 @@ class HTMLAnalyzeController {
 
     /**
      * Rest endpoint to retrieve links.
-     * Retrieves only maximum top 5 links and records the reachable status for each links from the given offset value.
-     * @param url url
-     * @param pageSize pageSize
-     * @param pageNumber pageNumber
-     * @return Links
+     * Retrieves a list of links of size requested in pageSize attribute. The default pageSize is 5.
+     * @param url String URL. The URL must begin with http:// or https://
+     * @param pageSize pageSize number of data-objects to be retrieved
+     * @param pageNumber starting pageNumber
+     * @return JSON response containing link information.
      */
     @RequestMapping("/rest/links")
     public Links<Link> links(@RequestParam(value="url", defaultValue="http://") String url,
@@ -107,7 +115,8 @@ class HTMLAnalyzeController {
             connection.setReadTimeout(timeout);
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
-            link.setReachable((200 <= responseCode && responseCode <= 399));
+            link.setReachable((200 <= responseCode && responseCode <= 399)); //verify the html response code and
+            // record this as reachable or not based on the html response code.
             link.setStatus(String.valueOf(responseCode));
         } catch (IOException exception) {
             log.info("Error verifying link url: " + url);

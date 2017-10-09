@@ -4,12 +4,22 @@ import java.util.Map;
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
+ * Data response object to populate HTML Metadata information
  */
 public class Metadata{
+    //Html version
     private String htmlVersion;
+
+    //HTML title
     private String title;
+
+    //Map of header type and count
     private Map<String, Long> header;
+
+    //Flag indicating if the page has a login form or not
     private boolean login;
+
+    //Map of LinkType and total count of each links
     private Map<LinkType, Integer> linkCount;
 
     public String getHtmlVersion() {

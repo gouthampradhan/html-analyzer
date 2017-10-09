@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
+ * Simple wrapper object to wrap the response data
  */
 public class ResultsWrapper {
     private Metadata metadata;

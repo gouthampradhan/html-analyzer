@@ -15,22 +15,34 @@ import java.util.List;
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
+ * Class to retrieve a set of links
  */
 public class LinkParser implements HtmlParser {
 
     private Log log = LogFactory.getLog(MetaDataParser.class);
 
+    /**
+     * Method retrieves a list of links from the given URL, sorts it and retrieves a sub-set of links starting from
+     * the given offset value and a total of n elements equal to pageSize parameter.
+     * @param request RequestWrapper containing request attributes
+     * @return ResultsWrapper
+     */
     @Override
     @SuppressWarnings("unchecked")
     public ResultsWrapper parse(RequestWrapper request) {
         ResultsWrapper resultsWrapper = new ResultsWrapper();
         try {
             Document doc = Jsoup.parse(new URL(request.getUrl()), TIME_OUT);
+            //Extract links
             HtmlDataExtractor extractor = new LinkExtractor();
             List<String> links = (List<String>)extractor.extract(doc);
+
+            //Sort links
             links.sort(Comparator.comparing(String::toString));
             int offset = request.getOffset();
             int size = request.getLimit();
+
+            //Retrieve a subset of links
             if(offset < links.size()){ //offset and limit should always be smaller than the size of list
                 int limit = offset + size;
                 if(limit > links.size()){
@@ -44,7 +56,6 @@ public class LinkParser implements HtmlParser {
         } catch (IOException e) {
             log.error("Failed to get metadata for the url: " + request.getUrl(), e);
         }
-        //TODO handle RunTimeException
         return resultsWrapper;
     }
 }

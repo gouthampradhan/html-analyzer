@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Created by gouthamvidyapradhan on 08/10/2017.
+ * Test rest endpoints with example URL
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,10 +26,10 @@ public class HTMLAnalyzeControllerTest {
 
     @Test
     public void testHtmlTitle() throws Exception {
-        this.mockMvc.perform(get("/rest/metadata?url=https://commons.apache.org/proper/commons-logging/guide.html"))
+        this.mockMvc.perform(get("/rest/metadata?url=https://google.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title").value("Apache Commons Logging - User Guide"));
+                .andExpect(jsonPath("$.title").value("Google"));
     }
 
     @Test
@@ -41,7 +42,7 @@ public class HTMLAnalyzeControllerTest {
 
     @Test
     public void testHtmlNoLoginForm() throws Exception {
-        this.mockMvc.perform(get("/rest/metadata?url=https://commons.apache.org/proper/commons-logging/guide.html"))
+        this.mockMvc.perform(get("/rest/metadata?url=https://google.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.hasLogin").value(false));
@@ -49,7 +50,7 @@ public class HTMLAnalyzeControllerTest {
 
     @Test
     public void testHtmlVersion5() throws Exception {
-        this.mockMvc.perform(get("/rest/metadata?url=https://github.com/login"))
+        this.mockMvc.perform(get("/rest/metadata?url=https://google.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.htmlVersion").value("HTML 5.0"));
@@ -65,7 +66,7 @@ public class HTMLAnalyzeControllerTest {
 
     @Test
     public void testHtmlHeaders() throws Exception {
-        this.mockMvc.perform(get("/rest/metadata?url=https://commons.apache.org/proper/commons-logging/guide.html"))
+        this.mockMvc.perform(get("/rest/metadata?url=https://google.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.h1Count").isNotEmpty())
@@ -78,10 +79,28 @@ public class HTMLAnalyzeControllerTest {
 
     @Test
     public void testHtmlLinkCount() throws Exception {
-        this.mockMvc.perform(get("/rest/metadata?url=https://commons.apache.org/proper/commons-logging/guide.html"))
+        this.mockMvc.perform(get("/rest/metadata?url=https://google.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.internalLinks").isNotEmpty())
                 .andExpect(jsonPath("$.externalLinks").isNotEmpty());
+    }
+
+    @Test
+    public void testHtmlLinks() throws Exception {
+        this.mockMvc.perform(get("/rest/links?url=https://google.com"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.links[*].url").isNotEmpty())
+                .andExpect(jsonPath("$.links[*].reachable").isNotEmpty())
+                .andExpect(jsonPath("$.links[*].status").isNotEmpty());
+    }
+
+    @Test
+    public void testHtmlLinksPageCount() throws Exception {
+        this.mockMvc.perform(get("/rest/links?url=https://google.com"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.links.length()").value(5));
     }
 }

@@ -14,11 +14,18 @@ import java.util.Map;
 
 /**
  * Created by gouthamvidyapradhan on 07/10/2017.
+ * Class to retrieve metadata information of the html page. Metadata information includes html version,
+ * html title, heading types, login info and count of internal and external links
  */
 public class MetaDataParser implements HtmlParser {
 
     private Log log = LogFactory.getLog(MetaDataParser.class);
 
+    /**
+     * Method retrieves the meta-data information of a given html page.
+     * @param request RequestWrapper containing request attributes
+     * @return ResultsWrapper
+     */
     @Override
     @SuppressWarnings("unchecked")
     public ResultsWrapper parse(RequestWrapper request) {
@@ -52,7 +59,6 @@ public class MetaDataParser implements HtmlParser {
         } catch (IOException e) {
             log.error("Failed to get metadata for the url: " + request.getUrl(), e);
         }
-        //TODO handle RunTimeException
         return resultsWrapper;
     }
 }
