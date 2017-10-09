@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 class HTMLAnalyzeController {
 
-    private Log log = LogFactory.getLog(HTMLAnalyzeController.class);
+    private static Log log = LogFactory.getLog(HTMLAnalyzeController.class);
 
     @RequestMapping("/rest/metadata")
     public MetaData metadata(@RequestParam(value="url", defaultValue="http://") String url) {
@@ -110,8 +110,13 @@ class HTMLAnalyzeController {
             link.setReachable((200 <= responseCode && responseCode <= 399));
             link.setStatus(String.valueOf(responseCode));
         } catch (IOException exception) {
+            log.info("Error verifying link url: " + url);
             link.setReachable(false);
             link.setStatus(exception.getLocalizedMessage());
+        } catch (Exception e){
+            log.info("Error verifying link url: " + url);
+            link.setReachable(false);
+            link.setStatus("Error verifying the url: " + url);
         }
         return link;
     }
