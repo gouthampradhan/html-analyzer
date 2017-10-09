@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import java.util.List;
 
 /**
+ * Created by gouthamvidyapradhan on 08/10/2017.
  * Class to extract links. Uses a helper class to extract links
  * @see LinkExtractorHelper
  */

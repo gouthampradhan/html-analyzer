@@ -1,6 +1,7 @@
 package htmlanalyzer.parser;
 
 /**
+ * Created by gouthamvidyapradhan on 08/10/2017.
  * Simple wrapper class to wrap the request parameters
  */
 public class RequestWrapper {

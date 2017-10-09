@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Created by gouthamvidyapradhan on 08/10/2017.
  * Class to extract link count categorized as internal and external
  */
 public class LinkCountExtractor implements HtmlDataExtractor {

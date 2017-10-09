@@ -3,6 +3,7 @@ package htmlanalyzer.parser.data;
 import java.util.List;
 
 /**
+ * Created by gouthamvidyapradhan on 07/10/2017.
  * Data response object to populate HTML heading count
  */
 public class Heading {

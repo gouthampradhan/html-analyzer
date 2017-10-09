@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
+ * Created by gouthamvidyapradhan on 07/10/2017.
  * Class to retrieve metadata information of the html page. Metadata information includes html version,
  * html title, heading types, login info and count of internal and external links
  */

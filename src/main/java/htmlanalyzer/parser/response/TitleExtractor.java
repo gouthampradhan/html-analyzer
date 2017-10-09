@@ -3,6 +3,7 @@ package htmlanalyzer.parser.response;
 import org.jsoup.nodes.Document;
 
 /**
+ * Created by gouthamvidyapradhan on 08/10/2017.
  * Class to extract title information from the url
  */
 public class TitleExtractor implements HtmlDataExtractor {
