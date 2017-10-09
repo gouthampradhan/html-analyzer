@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by gouthamvidyapradhan on 07/10/2017.
  * Class to extract the html version information.
  */
 public class VersionExtractor implements HtmlDataExtractor {

@@ -1,7 +1,6 @@
 package htmlanalyzer.parser;
 
 /**
- * Created by gouthamvidyapradhan on 07/10/2017.
  * HTMLParser interface. Implement this interface to parse different parts of html page.
  * @see LinkParser
  * @see MetaDataParser

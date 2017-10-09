@@ -1,7 +1,6 @@
 package htmlanalyzer.rest.model;
 
 /**
- * Created by gouthamvidyapradhan on 07/10/2017.
  * Java POJO to be marshaled as JSON response
  */
 public class MetaData {

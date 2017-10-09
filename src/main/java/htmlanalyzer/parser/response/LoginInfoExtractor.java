@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 /**
- * Created by gouthamvidyapradhan on 08/10/2017.
  * Class to extract the login information in the given url.
  */
 public class LoginInfoExtractor implements HtmlDataExtractor {

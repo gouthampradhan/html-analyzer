@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Created by gouthamvidyapradhan on 08/10/2017.
  * Test rest endpoints with example URL
  */
 @RunWith(SpringRunner.class)

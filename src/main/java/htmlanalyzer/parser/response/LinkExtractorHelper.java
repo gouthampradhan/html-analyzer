@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gouthamvidyapradhan on 08/10/2017.
  * A helper class to retrieve the links in a given document.
  */
 public class LinkExtractorHelper {

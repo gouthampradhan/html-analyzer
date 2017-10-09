@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Created by gouthamvidyapradhan on 08/10/2017.
  * Class to extract header type and total count of each type of header
  */
 public class HeaderExtractor implements HtmlDataExtractor {
